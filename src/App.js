@@ -8,8 +8,8 @@ class App extends React.Component {
     this.state = {
       price: "",
       tipPercent: "20",
-      tipAmount: "",
-      totalAmount: ""
+      tipAmount: "0.00",
+      totalAmount: "0.00"
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,7 +18,7 @@ class App extends React.Component {
 
   // Takes a number as input, returns a string in the format of a dollar amount
   formatValue(num) {
-    // Checking whether num is NaN: return 0.00
+    // If num is NaN: return 0.00
     if (isNaN(num)) {
         return "0.00";
     }
@@ -40,28 +40,33 @@ class App extends React.Component {
     }
   }
 
+  // Updates state of tipAmount and totalAmount
+  // Called when <form> in <InputBox /> is submitted, through pressing enter or clicking submit button
+  handleSubmit(event) {
+    // Must convert this.state.price and this.state.tipPercent to tipAmt/totalAmt, then parse with formatValue
+    // price and tipPercent are entered as strings, so convert to numbers
+    event.preventDefault();
+    // Multiply by 100 to prevent floating point math errors
+    let priceCalc = Number(this.state.price) * 100
+    let tipCalc = Number(this.state.tipPercent);
+    let tipAmt = (priceCalc * tipCalc) / 10000;
+    let totalAmt = tipAmt + (priceCalc / 100);
+    this.setState({
+      tipAmount: this.formatValue(tipAmt),
+      totalAmount: this.formatValue(totalAmt)
+    });
+
+  }
+
   // Updates state of price and tipPercent
+  // Called when <input>s in <InputBox /> are changed by user
   handleChange(event) {
     this.setState({
-      // key will be price or tipPercent; value will be
+      // key will be price or tipPercent; value will be value entered by user
       [event.target.name]: event.target.value
     });
   }
 
-  // Updates state of tipAmount and totalAmount
-  handleSubmit(event) {
-    event.preventDefault();
-    // Testing formatValue()
-    let valueToPass = this.state.price;
-    console.log(this.formatValue(Number(valueToPass)));
-    
-
-    this.setState({
-      tipAmount: 1,
-      totalAmount: 1
-    });
-
-  }
   render() {
     return (
       <div className="App">
@@ -95,11 +100,11 @@ const InputBox = props => {
         <label>
           Tip Amount:
           <select name="tipPercent" value={props.tipPercent} onChange={props.handleChange} >
-            <option value={15}>15%</option>
-            <option value={18}>18%</option>
-            <option value={20}>20%</option>
-            <option value={22}>22%</option>
-            <option value={25}>25%</option>
+            <option value="15">15%</option>
+            <option value="18">18%</option>
+            <option value="20">20%</option>
+            <option value="22">22%</option>
+            <option value="25">25%</option>
           </select>
         </label>
         <input type="submit" value="Submit" onClick={props.handleSubmit} />

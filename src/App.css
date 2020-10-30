@@ -5,7 +5,7 @@
 .AppInterface {  
   width: 60%;
   height: 60vh;
-  background-color: rgba(27, 27, 27, 0.8);
+  background-color: rgba(12, 12, 12, 0.8);
   margin: auto;
   text-align: center;
   color: white;
@@ -20,6 +20,6 @@
   bottom: 0;
   text-align: center;
   width: 100%;
-  background-color: rgba(27, 27, 27, 0.7);
+  background-color: rgba(12, 12, 12, 0.8);
   color: white;
 }
