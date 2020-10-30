@@ -7,13 +7,39 @@ class App extends React.Component {
     super(props);
     this.state = {
       price: "",
-      tipPercent: 20,
-      tipAmount: 0,
-      totalAmount: 0
+      tipPercent: "20",
+      tipAmount: "",
+      totalAmount: ""
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.formatValue = this.formatValue.bind(this);
   }
+
+  // Takes a number as input, returns a string in the format of a dollar amount
+  formatValue(num) {
+    // Checking whether num is NaN: return 0.00
+    if (isNaN(num)) {
+        return "0.00";
+    }
+    // Converting num to a string
+    let numStr = num.toString()
+    if (numStr.match(/\.\d{2}$/)) {   
+      // If already exactly two decimal places: return as-is
+      return numStr;
+    } else if (numStr.match(/\.\d$/)) {
+      // If only one decimal place: add "0" to end
+      return numStr + "0";
+    } else if (!numStr.match(/\./)) {
+      // If no decimal, add decimal point with two 0s
+      return numStr + ".00";
+    } else {
+      // At this point: there must be > 2 decimal places, so trim string
+      let decimal = numStr.indexOf(".");
+      return numStr.slice(0, (decimal + 3));
+    }
+  }
+
   // Updates state of price and tipPercent
   handleChange(event) {
     this.setState({
@@ -21,15 +47,19 @@ class App extends React.Component {
       [event.target.name]: event.target.value
     });
   }
+
   // Updates state of tipAmount and totalAmount
-  // This method is not yet working. Is currently written to test whether the UI rendering components work
   handleSubmit(event) {
-    console.log(this.state.price, this.state.tipPercent);
+    event.preventDefault();
+    // Testing formatValue()
+    let valueToPass = this.state.price;
+    console.log(this.formatValue(Number(valueToPass)));
+    
+
     this.setState({
       tipAmount: 1,
       totalAmount: 1
     });
-    event.preventDefault();
 
   }
   render() {
@@ -65,11 +95,11 @@ const InputBox = props => {
         <label>
           Tip Amount:
           <select name="tipPercent" value={props.tipPercent} onChange={props.handleChange} >
-            <option value="15">15%</option>
-            <option value="18">18%</option>
-            <option value="20">20%</option>
-            <option value="22">22%</option>
-            <option value="25">25%</option>
+            <option value={15}>15%</option>
+            <option value={18}>18%</option>
+            <option value={20}>20%</option>
+            <option value={22}>22%</option>
+            <option value={25}>25%</option>
           </select>
         </label>
         <input type="submit" value="Submit" onClick={props.handleSubmit} />
