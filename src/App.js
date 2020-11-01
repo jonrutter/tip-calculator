@@ -110,7 +110,7 @@ const InputBox = props => {
             </select>
           </label>
         </div>
-        <input className="flex-item" type="submit" value="Submit" onClick={props.handleSubmit} />
+        <input className="flex-item" type="submit" value="Submit!" onClick={props.handleSubmit} />
       </form>
 
     </div>
@@ -121,8 +121,8 @@ const InputBox = props => {
 const OutputBox = props => {
   return (
     <div className="flex-container">
-      <span className="flex-item">Tip Amount: ${props.tipAmount}</span>
-      <span className="flex-item">Total Amount: ${props.totalAmount}</span>
+      <span className="flex-item">Tip Amount: <span className="output">${props.tipAmount}</span></span>
+      <span className="flex-item">Total Amount: <span className="output">${props.totalAmount}</span></span>
     </div>
   )
 }
