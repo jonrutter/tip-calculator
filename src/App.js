@@ -61,21 +61,21 @@ class App extends React.Component {
   // Updates state of price and tipPercent
   // Called when <input>s in <InputBox /> are changed by user
   handleChange(event) {
+    // Pop-up warning if value is outside permitted range
     this.setState({
       // key will be price or tipPercent; value will be value entered by user
       [event.target.name]: event.target.value
     });
   }
-
   render() {
     return (
       <div className="App">
         <AppInterface price={this.state.price} tipPercent={this.state.tipPercent} tipAmount={this.state.tipAmount} totalAmount={this.state.totalAmount} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
-        <AppFooter />
       </div>
     );
   }
 }
+
 
 // Component to render application's main interface
 const AppInterface = props => {
@@ -93,21 +93,24 @@ const InputBox = props => {
   return (
     <div>
       <form onSubmit={props.handleSubmit}>
-        <label>
-          Price:
-          <input type="number" name="price" placeholder="0.00" min="0.00" step="0.01" value={props.price} onChange={props.handleChange} />
-        </label>
-        <label>
-          Tip Amount:
-          <select name="tipPercent" value={props.tipPercent} onChange={props.handleChange} >
-            <option value="15">15%</option>
-            <option value="18">18%</option>
-            <option value="20">20%</option>
-            <option value="22">22%</option>
-            <option value="25">25%</option>
-          </select>
-        </label>
-        <input type="submit" value="Submit" onClick={props.handleSubmit} />
+        <div className="flex-container"> 
+          <label className="flex-item">
+            Price:<br />
+            <span className="input-prefix">$</span>
+            <input type="number" name="price" placeholder="0.00" min="0.00" step="0.01" value={props.price} onChange={props.handleChange} />
+          </label>
+          <label className="flex-item">
+            Tip Amount: <br />
+            <select name="tipPercent" value={props.tipPercent} onChange={props.handleChange} >
+              <option value="15">15%</option>
+              <option value="18">18%</option>
+              <option value="20">20%</option>
+              <option value="22">22%</option>
+              <option value="25">25%</option>
+            </select>
+          </label>
+        </div>
+        <input className="flex-item" type="submit" value="Submit" onClick={props.handleSubmit} />
       </form>
 
     </div>
@@ -117,20 +120,12 @@ const InputBox = props => {
 // Component to render the application's output
 const OutputBox = props => {
   return (
-    <div>
-      <h2>Tip Amount: ${props.tipAmount}</h2>
-      <h2>Total Amount: ${props.totalAmount}</h2>
+    <div className="flex-container">
+      <span className="flex-item">Tip Amount: ${props.tipAmount}</span>
+      <span className="flex-item">Total Amount: ${props.totalAmount}</span>
     </div>
   )
 }
 
-// Component to render the application's footer
-const AppFooter = () => {
-  return (
-    <footer className="AppFooter">
-      <p>&copy; 2020 Jon Rutter.</p>
-    </footer>
-  )
-}
 
 export default App;
